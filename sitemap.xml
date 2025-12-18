@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>./index.html</loc></url>
-  <url><loc>./builder.html</loc></url>
-  <url><loc>./cover-letter.html</loc></url>
-  <url><loc>./ats.html</loc></url>
-  <url><loc>./templates.html</loc></url>
-  <url><loc>./guides/index.html</loc></url>
-  <url><loc>./guides/ats-resume.html</loc></url>
-  <url><loc>./guides/resume-summary-examples.html</loc></url>
-  <url><loc>./guides/resume-bullets.html</loc></url>
-  <url><loc>./guides/resume-formatting.html</loc></url>
-  <url><loc>./guides/ats-keywords.html</loc></url>
-  <url><loc>./guides/cover-letter-examples.html</loc></url>
-  <url><loc>./privacy.html</loc></url>
-  <url><loc>./terms.html</loc></url>
-  <url><loc>./about.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/builder.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/cover-letter.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/ats.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/templates.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/guides/</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/guides/ats-resume.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/guides/resume-summary-examples.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/guides/resume-bullets.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/guides/resume-formatting.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/guides/ats-keywords.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/guides/cover-letter-examples.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/privacy.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/terms.html</loc></url>
+  <url><loc>https://my-ats-resume-builder.netlify.app/about.html</loc></url>
 </urlset>
