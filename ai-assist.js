@@ -8,6 +8,7 @@ class AIAssistant {
     this.suggestions = document.querySelector('.ai-suggestions');
     this.targetSection = document.getElementById('aiTarget');
     this.inputSection = document.querySelector('.ai-input-section');
+    this.webSearch = new WebSearchAI();
     
     this.init();
   }
@@ -44,7 +45,7 @@ class AIAssistant {
   }
 
   handleAction(action) {
-    const needsTarget = action === 'tailor-to-job';
+    const needsTarget = action === 'tailor-to-job' || action === 'market-insights';
     this.inputSection.style.display = needsTarget ? 'block' : 'none';
 
     if (needsTarget && !this.targetSection.value.trim()) {
@@ -61,6 +62,12 @@ class AIAssistant {
     try {
       const resumeData = this.getResumeData();
       const targetJob = this.targetSection.value.trim();
+      
+      if (action === 'market-insights' && targetJob) {
+        const insights = await this.webSearch.generateMarketInsights(resumeData, targetJob);
+        this.displayMarketInsights(insights);
+        return;
+      }
       
       let prompt = this.buildPrompt(action, resumeData, targetJob);
       let suggestions = await this.generateSuggestions(prompt);
@@ -341,6 +348,100 @@ Education: ${data.education.map(e => `${e.degree} from ${e.school}`).join('\n')}
         ${message}
       </div>
     `;
+  }
+
+  displayMarketInsights(insights) {
+    this.loading.style.display = 'none';
+    this.suggestions.style.display = 'block';
+    
+    let html = '<h4>Market Intelligence Report</h4>';
+    
+    // Market fit analysis
+    if (insights.marketFit) {
+      html += `
+        <div class="insight-section" style="margin-bottom: 20px; padding: 15px; background: rgba(16,31,59,.3); border-radius: 8px;">
+          <h5>Market Fit Analysis</h5>
+          <div class="fit-score" style="font-size: 24px; font-weight: bold; margin: 10px 0;">
+            ${insights.marketFit.matchPercentage}% Match
+          </div>
+          <div><strong>Matching Skills:</strong> ${insights.marketFit.matchingSkills.join(', ') || 'None found'}</div>
+          <div><strong>Missing Skills:</strong> ${insights.marketFit.missingSkills.slice(0, 3).join(', ') || 'None'}</div>
+        </div>
+      `;
+    }
+    
+    // Skill gaps
+    if (insights.skillGaps && insights.skillGaps.length > 0) {
+      html += `
+        <div class="insight-section" style="margin-bottom: 20px; padding: 15px; background: rgba(16,31,59,.3); border-radius: 8px;">
+          <h5>Recommended Skills to Learn</h5>
+          <div class="skill-gaps">
+            ${insights.skillGaps.map(skill => `
+              <div style="margin: 5px 0;">
+                <button class="btn btn-sm btn-outline" onclick="aiAssistant.addSkill('${skill}')">
+                  Add ${skill}
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+    
+    // Salary insights
+    if (insights.salaryExpectations) {
+      const role = Object.keys(insights.salaryExpectations)[0];
+      const salaryData = insights.salaryExpectations[role];
+      if (salaryData) {
+        html += `
+          <div class="insight-section" style="margin-bottom: 20px; padding: 15px; background: rgba(16,31,59,.3); border-radius: 8px;">
+            <h5>Salary Expectations for ${role}</h5>
+            <div><strong>Range:</strong> $${salaryData.min.toLocaleString()} - $${salaryData.max.toLocaleString()}</div>
+            <div><strong>Median:</strong> $${salaryData.median.toLocaleString()}</div>
+            <div><strong>Remote:</strong> $${salaryData.byLocation?.Remote?.median.toLocaleString() || 'N/A'}</div>
+          </div>
+        `;
+      }
+    }
+    
+    // Trending skills
+    if (insights.trendingSkills) {
+      const topSkills = Object.entries(insights.trendingSkills)
+        .filter(([_, data]) => data && data.repositoryCount)
+        .sort((a, b) => b[1].repositoryCount - a[1].repositoryCount)
+        .slice(0, 5);
+      
+      if (topSkills.length > 0) {
+        html += `
+          <div class="insight-section" style="margin-bottom: 20px; padding: 15px; background: rgba(16,31,59,.3); border-radius: 8px;">
+            <h5>Trending Skills</h5>
+            ${topSkills.map(([skill, data]) => `
+              <div style="margin: 8px 0; display: flex; justify-content: space-between;">
+                <span>${skill}</span>
+                <span class="muted">${data.repositoryCount?.toLocaleString() || 'N/A'} repos</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+    }
+    
+    // Recommendations
+    if (insights.recommendations && insights.recommendations.length > 0) {
+      html += `
+        <div class="insight-section" style="margin-bottom: 20px; padding: 15px; background: rgba(16,31,59,.3); border-radius: 8px;">
+          <h5>AI Recommendations</h5>
+          ${insights.recommendations.map(rec => `
+            <div style="margin: 10px 0; padding: 10px; background: rgba(31,47,87,.2); border-radius: 4px;">
+              <div style="font-weight: 600; margin-bottom: 5px;">${rec.type.replace('_', ' ').toUpperCase()}</div>
+              <div>${rec.text}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    
+    this.suggestions.innerHTML = html;
   }
 }
 
