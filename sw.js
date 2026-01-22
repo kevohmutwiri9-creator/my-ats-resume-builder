@@ -50,6 +50,11 @@ self.addEventListener('install', (event) => {
 
 // Fetch event - serve from cache when offline
 self.addEventListener('fetch', (event) => {
+  // Skip chrome-extension requests
+  if (event.request.url.startsWith('chrome-extension://')) {
+    return new Response('Chrome extension requests are not supported', { status: 400 });
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
@@ -61,23 +66,27 @@ self.addEventListener('fetch', (event) => {
         // Network request with proper redirect handling
         return fetch(event.request, { redirect: 'follow' }).then((response) => {
           // Check if valid response
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
+          if (!response || response.status === 0 || response.type === 'opaque') {
+            return new Response('Network error', { status: 500 });
           }
 
           // Clone response for caching
           const responseToCache = response.clone();
           
-          caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseToCache);
-            })
-            .catch((error) => {
-              console.error('Failed to cache response:', error);
-            });
-
+          // Only cache successful responses
+          if (response.ok && response.type === 'basic') {
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              })
+              .catch((error) => {
+                console.error('Failed to cache response:', error);
+              });
+          }
+          
           return response;
-        }).catch(() => {
+        })
+        .catch(() => {
           // Network failed, try to serve from cache
           return caches.match(event.request);
         });
