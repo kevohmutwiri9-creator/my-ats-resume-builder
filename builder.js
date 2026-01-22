@@ -475,12 +475,24 @@ function attachButtons(state) {
     render(state);
   });
 
-  $('exportPdfBtn').addEventListener('click', () => {
-    saveState(state);
+  $('exportPdfBtn').addEventListener('click', async () => {
+    const removeSpinner = showLoadingSpinner($('exportPdfBtn'));
+
     try {
+      saveState(state);
       localStorage.setItem('ats_resume_plaintext_v1', resumeToPlainText(state));
-    } catch {}
-    window.print();
+
+      // Add a small delay to show the spinner
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      window.print();
+      showToast('PDF export initiated. Use your browser\'s print dialog to save as PDF.', 'success');
+    } catch (error) {
+      console.error('Export error:', error);
+      showToast('Failed to export PDF. Please try again.', 'error');
+    } finally {
+      removeSpinner();
+    }
   });
 
   $('resetBtn').addEventListener('click', () => {

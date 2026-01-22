@@ -1,0 +1,16 @@
+{
+  "name": "ats-resume-builder",
+  "version": "1.0.0",
+  "description": "ATS Resume Builder - A modern resume builder with AI assistance",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve -s . -l 10000",
+    "build": "echo 'Static build complete'"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": "22.22.0"
+  }
+}

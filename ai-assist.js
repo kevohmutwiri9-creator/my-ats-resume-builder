@@ -148,10 +148,113 @@ Education: ${data.education.map(e => `${e.degree} from ${e.school}`).join('\n')}
   }
 
   async generateSuggestions(prompt) {
-    // Simulated AI response - replace with actual API call
+    try {
+      // Try to use Gemini API if available
+      const apiKey = this.getGeminiApiKey();
+      if (apiKey) {
+        return await this.callGeminiAPI(prompt);
+      }
+    } catch (error) {
+      console.warn('Gemini API failed, falling back to mock responses:', error);
+    }
+
+    // Fallback to mock responses
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
     return this.generateMockSuggestions(prompt);
+  }
+
+  getGeminiApiKey() {
+    // Try to get from environment variable (server-side) or from a global config
+    return process?.env?.GEMINI_API_KEY ||
+           window?.GEMINI_API_KEY ||
+           document.querySelector('meta[name="gemini-api-key"]')?.content;
+  }
+
+  async callGeminiAPI(prompt) {
+    const apiKey = this.getGeminiApiKey();
+    if (!apiKey) throw new Error('No Gemini API key available');
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 1024,
+        }
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Gemini API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+      throw new Error('Invalid response from Gemini API');
+    }
+
+    const aiResponse = data.candidates[0].content.parts[0].text;
+
+    // Parse the AI response into our expected format
+    return this.parseGeminiResponse(aiResponse, prompt);
+  }
+
+  parseGeminiResponse(response, originalPrompt) {
+    // Determine the type of response based on the original prompt
+    let title = 'AI Suggestions';
+    let items = [];
+
+    if (originalPrompt.includes('improve-summary')) {
+      title = 'Improved Summary Options';
+      // Split response into multiple options if possible
+      const options = response.split(/\d+\.|Option|•/).filter(opt => opt.trim().length > 20);
+      items = options.slice(0, 3).map((text, index) => ({
+        text: text.trim(),
+        explanation: `AI-generated option ${index + 1} based on your resume data.`
+      }));
+    } else if (originalPrompt.includes('strengthen-bullets')) {
+      title = 'Strengthened Bullet Points';
+      const bullets = response.split(/\n|•/).filter(bullet => bullet.trim().length > 10);
+      items = bullets.slice(0, 3).map(bullet => ({
+        text: bullet.trim(),
+        explanation: 'Enhanced with action verbs and metrics for better impact.'
+      }));
+    } else if (originalPrompt.includes('suggest-skills')) {
+      title = 'Recommended Skills';
+      const skillCategories = response.split(/\n\n|Technical|Soft|Advanced/).filter(cat => cat.trim());
+      items = skillCategories.slice(0, 3).map(category => ({
+        text: category.trim(),
+        explanation: 'Skills recommended based on your industry and experience level.'
+      }));
+    } else if (originalPrompt.includes('tailor-to-job')) {
+      title = 'Tailoring Recommendations';
+      const recommendations = response.split(/\n|•/).filter(rec => rec.trim().length > 10);
+      items = recommendations.slice(0, 4).map(rec => ({
+        text: rec.trim(),
+        explanation: 'Specific recommendations to better match the job requirements.'
+      }));
+    }
+
+    // If parsing failed, return the raw response
+    if (items.length === 0) {
+      items = [{
+        text: response,
+        explanation: 'AI-generated suggestion based on your request.'
+      }];
+    }
+
+    return { title, items };
   }
 
   generateMockSuggestions(prompt) {

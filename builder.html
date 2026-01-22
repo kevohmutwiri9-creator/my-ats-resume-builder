@@ -41,10 +41,26 @@
       <div class="field">
         <label for="template">Template</label>
         <select id="template">
-          <option value="clean">Clean (ATS)</option>
-          <option value="modern">Modern</option>
-          <option value="compact">Compact</option>
-          <option value="executive">Executive</option>
+          <optgroup label="General">
+            <option value="clean">Clean (ATS)</option>
+            <option value="modern">Modern</option>
+            <option value="compact">Compact</option>
+            <option value="executive">Executive</option>
+          </optgroup>
+          <optgroup label="Industry Specific">
+            <option value="tech">Tech Professional</option>
+            <option value="creative">Creative</option>
+            <option value="academic">Academic</option>
+            <option value="finance">Finance</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="sales">Sales & Marketing</option>
+          </optgroup>
+          <optgroup label="Specialized">
+            <option value="minimalist">Minimalist</option>
+            <option value="bold">Bold & Colorful</option>
+            <option value="elegant">Elegant</option>
+            <option value="startup">Startup</option>
+          </optgroup>
         </select>
       </div>
 
@@ -192,6 +208,7 @@
   <script src="./web-search.js"></script>
   <script src="./ai-assist.js"></script>
   <script src="./ai-greeter.js"></script>
+  <script src="./ai-chat.js"></script>
   <script src="./site.js"></script>
   <script src="./builder.js"></script>
 </body>

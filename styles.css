@@ -137,4 +137,31 @@ input:focus,textarea:focus,select:focus{border-color:rgba(124,92,255,.7);box-sha
 .btn-outline{background:transparent;border:1px solid rgba(31,47,87,.85);color:var(--text)}
 .btn-outline:hover{background:rgba(31,47,87,.3)}
 @media (max-width:1060px){.builder-layout{grid-template-columns:1fr}.preview{position:static}.hero{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.modal{padding:10px}.ai-options{grid-template-columns:1fr}}
+
+@media (max-width:768px){
+  .builder-layout{grid-template-columns:1fr;gap:20px}
+  .panel{max-width:100%;margin:0}
+  .preview{max-width:100%;margin:0}
+  .toolbar{flex-direction:column;gap:10px}
+  .form-grid{grid-template-columns:1fr}
+  .item-actions{flex-wrap:wrap;gap:5px}
+  .item-actions button{font-size:12px;padding:4px 8px}
+  .pill-list{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{font-size:13px;padding:6px 10px}
+  .ai-floating-btn{bottom:15px;right:15px;width:50px;height:50px}
+  .ai-floating-icon{width:20px;height:20px}
+}
+
+@media (max-width:480px){
+  .container{padding:12px}
+  .panel-header h1{font-size:20px}
+  .panel-subtitle{font-size:13px}
+  .btn{font-size:14px;padding:8px 16px}
+  .field label{font-size:14px}
+  .field input,.field textarea{font-size:16px}
+  .item-title{font-size:14px}
+  .entry-role{font-size:16px}
+  .entry-meta{font-size:13px}
+  .skill-chip{font-size:12px;padding:4px 8px}
+}
 @media print{body{background:#fff}.site-header,.site-footer,.panel,.print-hint,.preview-top{display:none !important}.container{max-width:none;padding:0}.paper{box-shadow:none;border-radius:0;min-height:auto;padding:0} }
