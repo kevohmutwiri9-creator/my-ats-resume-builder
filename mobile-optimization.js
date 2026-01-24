@@ -226,6 +226,11 @@ window.MOBILE = {
 
   // Create mobile navigation overlay
   createMobileNavOverlay: function() {
+    // Check if already exists
+    if (document.querySelector('.mobile-nav-overlay')) {
+      return;
+    }
+
     const overlay = document.createElement('div');
     overlay.className = 'mobile-nav-overlay';
     overlay.innerHTML = `
@@ -246,6 +251,7 @@ window.MOBILE = {
       </div>
     `;
 
+    // Add to body, not to any specific container
     document.body.appendChild(overlay);
 
     // Close handlers
@@ -266,6 +272,17 @@ window.MOBILE = {
     if (overlay) {
       overlay.classList.toggle('active');
       document.body.classList.toggle('mobile-nav-open');
+      
+      // Ensure proper display
+      if (overlay.classList.contains('active')) {
+        overlay.style.display = 'block';
+      } else {
+        setTimeout(() => {
+          if (!overlay.classList.contains('active')) {
+            overlay.style.display = 'none';
+          }
+        }, 300);
+      }
     }
   },
 
@@ -275,6 +292,9 @@ window.MOBILE = {
     if (overlay) {
       overlay.classList.remove('active');
       document.body.classList.remove('mobile-nav-open');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 300);
     }
   },
 
@@ -478,13 +498,15 @@ window.MOBILE = {
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
+        z-index: 9999;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
+        display: none;
       }
       
       .mobile-nav-overlay.active {
         transform: translateX(0);
+        display: block;
       }
       
       .mobile-nav-content {
