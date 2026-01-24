@@ -11,9 +11,9 @@
     "serve": "^14.2.1"
   },
   "engines": {
-    "node": "22.22.0"
+    "node": "22"
   },
   "keywords": ["resume", "ats", "builder", "static-site", "frontend"],
   "license": "MIT",
-  "homepage": "https://ats-resume-builder-2zy3.onrender.com/"
+  "homepage": "https://my-ats-resume-builder.vercel.app/"
 }
