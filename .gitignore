@@ -9,3 +9,5 @@ Thumbs.db
 .idea/
 .env
 .env.*
+.vercel
+.env*.local

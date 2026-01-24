@@ -2,7 +2,7 @@
   "name": "ATS Resume Builder",
   "short_name": "Resume Builder",
   "description": "Build ATS-friendly resumes with AI assistance, professional templates, and real-time optimization",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "display": "standalone",
   "background_color": "#0b1220",
   "theme_color": "#7c5cff",

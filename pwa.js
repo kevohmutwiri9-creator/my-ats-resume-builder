@@ -235,7 +235,7 @@ window.PWA = {
   cacheResources: async function(resources) {
     if ('caches' in window) {
       try {
-        const cache = await caches.open('ats-resume-builder-v1');
+        const cache = await caches.open('ats-resume-builder-v3');
         await cache.addAll(resources);
         console.log('Resources cached for offline use');
       } catch (error) {
@@ -248,7 +248,7 @@ window.PWA = {
   getCachedResource: async function(url) {
     if ('caches' in window) {
       try {
-        const cache = await caches.open('ats-resume-builder-v1');
+        const cache = await caches.open('ats-resume-builder-v3');
         return await cache.match(url);
       } catch (error) {
         console.error('Failed to get cached resource:', error);
