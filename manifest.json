@@ -1,0 +1,74 @@
+{
+  "name": "ATS Resume Builder",
+  "short_name": "Resume Builder",
+  "description": "Build ATS-friendly resumes with AI assistance, professional templates, and real-time optimization",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#7c5cff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["business", "productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Build Resume",
+      "short_name": "Resume",
+      "description": "Create a new resume",
+      "url": "/builder.html",
+      "icons": [
+        {
+          "src": "/icons/icon-96.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Cover Letter",
+      "short_name": "Cover Letter",
+      "description": "Write a cover letter",
+      "url": "/cover-letter.html",
+      "icons": [
+        {
+          "src": "/icons/icon-96.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "ATS Checker",
+      "short_name": "ATS Check",
+      "description": "Check ATS compatibility",
+      "url": "/ats.html",
+      "icons": [
+        {
+          "src": "/icons/icon-96.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-96.svg",
+      "sizes": "96x96",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}

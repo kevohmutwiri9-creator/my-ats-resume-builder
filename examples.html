@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume Examples | ATS Resume Builder</title>
+  <meta name="description" content="Professional resume examples by industry. Get inspired by real resume samples for tech, healthcare, finance, marketing, and more." />
+  <meta name="google-adsense-account" content="ca-pub-2396098605485959">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2396098605485959"
+     crossorigin="anonymous"></script>
+  
+  <!-- Enhanced SEO Meta Tags -->
+  <meta name="keywords" content="resume examples, resume samples, CV examples, professional resume, industry examples, job resume templates">
+  <meta name="author" content="ATS Resume Builder">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <meta property="og:title" content="Resume Examples by Industry - ATS Resume Builder">
+  <meta property="og:description" content="Browse professional resume examples by industry. Get inspired by real resume samples for tech, healthcare, finance, marketing, and more.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ats-resume-builder.com/examples.html">
+  <meta property="og:site_name" content="ATS Resume Builder">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Resume Examples by Industry">
+  <meta name="twitter:description" content="Browse professional resume examples by industry. Get inspired by real resume samples.">
+  <link rel="canonical" href="https://ats-resume-builder.com/examples.html">
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Resume Examples",
+    "description": "Professional resume examples by industry. Get inspired by real resume samples for tech, healthcare, finance, marketing, and more.",
+    "url": "https://ats-resume-builder.com/examples.html",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Technology Resume Examples",
+          "description": "Resume examples for software developers, IT professionals, and tech roles"
+        },
+        {
+          "@type": "ListItem", 
+          "position": 2,
+          "name": "Healthcare Resume Examples",
+          "description": "Resume examples for nurses, doctors, and healthcare professionals"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Finance Resume Examples",
+          "description": "Resume examples for financial analysts, accountants, and finance professionals"
+        }
+      ]
+    }
+  }
+  </script>
+  
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./cookie-consent.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html">ATS Resume Builder</a>
+      <nav class="nav">
+        <a href="./builder.html">Resume</a>
+        <a href="./cover-letter.html">Cover Letter</a>
+        <a href="./ats.html">ATS Checker</a>
+        <a href="./guides/index.html">Guides</a>
+        <a class="active" href="./examples.html">Examples</a>
+        <a href="./templates.html">Templates</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container narrow">
+    <h1>Resume Examples by Industry</h1>
+    <p class="muted">Get inspired by professional resume examples tailored to your industry. Each example is ATS-optimized and includes quantifiable achievements.</p>
+
+    <!-- Search Section -->
+    <div class="search-section">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search resume examples..." class="search-input">
+        <button class="btn btn-primary search-btn" onclick="ResumeExamples.searchExamples()">Search</button>
+      </div>
+    </div>
+
+    <!-- Industry Selection -->
+    <div class="industry-grid" id="industryGrid">
+      <!-- Industries will be populated by JavaScript -->
+    </div>
+
+    <!-- Search Results -->
+    <div id="searchResults" class="search-results" style="display: none;">
+      <h3>Search Results</h3>
+      <div id="searchResultsList" class="results-list">
+        <!-- Results will be populated by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Examples Display -->
+    <div id="examplesDisplay" class="examples-display">
+      <!-- Examples will be populated by JavaScript -->
+    </div>
+
+    <!-- Ad Slot -->
+    <div id="ad-content-2" class="ad-slot" aria-label="Advertisement">
+      <div class="ad-label">Advertisement</div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="muted">© <span id="year"></span> ATS Resume Builder</div>
+      <div class="footer-links">
+        <a href="./privacy.html">Privacy</a>
+        <a href="./terms.html">Terms</a>
+        <a href="./about.html">About</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./site.js"></script>
+  <script src="./cookie-consent.js"></script>
+  <script src="./analytics.js"></script>
+  <script src="./adsense-config.js"></script>
+  <script src="./i18n.js"></script>
+  <script src="./pwa.js"></script>
+  <script>
+    // Initialize examples page
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof window.ResumeExamples !== 'undefined') {
+        window.ResumeExamples.initExamplesPage();
+      }
+    });
+  </script>
+</body>
+</html>

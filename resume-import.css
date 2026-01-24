@@ -1,0 +1,331 @@
+/* Resume Import Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid var(--line);
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+.modal-body {
+  padding: 25px;
+}
+
+.import-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.import-option {
+  background: rgba(16, 31, 59, 0.3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius2);
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.import-option:hover {
+  border-color: var(--brand);
+  background: rgba(124, 92, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.import-option h4 {
+  margin: 0 0 10px 0;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.import-option p {
+  margin: 0 0 15px 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.import-option input[type="url"],
+.import-option textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius2);
+  background: rgba(16, 31, 59, 0.2);
+  color: var(--text);
+  font-size: 14px;
+  margin-bottom: 15px;
+  transition: border-color 0.2s ease;
+}
+
+.import-option input[type="url"]:focus,
+.import-option textarea:focus {
+  outline: none;
+  border-color: var(--brand);
+}
+
+.import-option textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+}
+
+.import-results {
+  background: rgba(16, 31, 59, 0.2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius2);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.import-results h4 {
+  margin: 0 0 20px 0;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.import-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.import-section {
+  background: rgba(16, 31, 59, 0.3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius2);
+  padding: 15px;
+}
+
+.import-section h5 {
+  margin: 0 0 12px 0;
+  color: var(--brand);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.import-section p {
+  margin: 0 0 8px 0;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.import-section strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.import-item {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.import-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.import-item ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+
+.import-item li {
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.skill-chip {
+  background: var(--brand);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.import-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.import-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(124, 92, 255, 0.1);
+  border: 1px solid var(--brand);
+  border-radius: var(--radius2);
+  margin: 20px 0;
+}
+
+.import-loading .loading-spinner {
+  margin-right: 10px;
+}
+
+.import-error {
+  background: rgba(255, 77, 109, 0.1);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius2);
+  padding: 15px;
+  margin: 20px 0;
+  color: var(--danger);
+}
+
+.import-success {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--ok);
+  color: white;
+  padding: 15px 20px;
+  border-radius: var(--radius2);
+  box-shadow: var(--shadow);
+  z-index: 10001;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+  
+  .modal-content {
+    max-height: 95vh;
+  }
+  
+  .modal-header,
+  .modal-body {
+    padding: 15px;
+  }
+  
+  .import-options {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .import-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .import-actions {
+    flex-direction: column;
+  }
+  
+  .import-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Animation for modal appearance */
+.modal-overlay {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay[style*="flex"] {
+  opacity: 1;
+}
+
+.modal-content {
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay[style*="flex"] .modal-content {
+  transform: scale(1);
+}
+
+/* File input styling */
+input[type="file"] {
+  display: none;
+}
+
+.btn {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}

@@ -1,0 +1,387 @@
+/* Executive Resume Template Styles */
+.executive-template {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: #f8f9fa;
+  color: #2c3e50;
+}
+
+.executive-template .paper {
+  background: white;
+  border: 2px solid #2c3e50;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.executive-template .paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+}
+
+.executive-template .resume-header {
+  padding: 50px 60px 30px 60px;
+  text-align: center;
+  border-bottom: 3px double #2c3e50;
+}
+
+.executive-template .name {
+  font-size: 48px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.executive-template .contact {
+  font-size: 14px;
+  color: #5a6c7d;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  font-weight: 500;
+}
+
+.executive-template .contact span {
+  position: relative;
+  padding-left: 20px;
+}
+
+.executive-template .contact span::before {
+  content: '•';
+  position: absolute;
+  left: 8px;
+  color: #2c3e50;
+}
+
+.executive-template .resume-section {
+  padding: 40px 60px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.executive-template .resume-section:last-child {
+  border-bottom: none;
+}
+
+.executive-template .section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 25px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.executive-template .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: #2c3e50;
+}
+
+.executive-template .entry {
+  margin-bottom: 30px;
+}
+
+.executive-template .entry:last-child {
+  margin-bottom: 0;
+}
+
+.executive-template .entry-header {
+  margin-bottom: 15px;
+}
+
+.executive-template .entry-role {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 5px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.executive-template .entry-meta {
+  font-size: 14px;
+  color: #5a6c7d;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.executive-template .entry-description {
+  color: #4a5568;
+  line-height: 1.8;
+  margin: 0;
+  font-size: 15px;
+}
+
+.executive-template .entry-description ul {
+  margin: 15px 0 0 0;
+  padding-left: 25px;
+}
+
+.executive-template .entry-description li {
+  margin-bottom: 12px;
+  color: #4a5568;
+  line-height: 1.7;
+}
+
+.executive-template .entry-description li::marker {
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+/* Executive Summary Section */
+.executive-template .summary-section {
+  background: linear-gradient(135deg, rgba(44, 62, 80, 0.03) 0%, rgba(52, 73, 94, 0.03) 100%);
+  border-left: 5px solid #2c3e50;
+  margin: 20px 0;
+  padding: 30px 40px;
+}
+
+.executive-template .summary-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #4a5568;
+  text-align: justify;
+  font-style: italic;
+  position: relative;
+}
+
+.executive-template .summary-text::before,
+.executive-template .summary-text::after {
+  content: '"';
+  font-size: 24px;
+  color: #2c3e50;
+  position: absolute;
+}
+
+.executive-template .summary-text::before {
+  top: -10px;
+  left: -15px;
+}
+
+.executive-template .summary-text::after {
+  bottom: -25px;
+  right: 0;
+}
+
+/* Skills Section */
+.executive-template .skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.executive-template .skill-category {
+  text-align: center;
+}
+
+.executive-template .skill-category h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 15px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 8px;
+}
+
+.executive-template .skill-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.executive-template .skill-list li {
+  font-size: 14px;
+  color: #4a5568;
+  margin-bottom: 8px;
+  padding: 6px 0;
+  border-bottom: 1px dotted #e9ecef;
+}
+
+.executive-template .skill-list li:last-child {
+  border-bottom: none;
+}
+
+/* Education Section */
+.executive-template .education-item {
+  margin-bottom: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.executive-template .education-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.executive-template .education-info h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.executive-template .education-info p {
+  font-size: 15px;
+  color: #5a6c7d;
+  margin: 0 0 5px 0;
+  font-style: italic;
+}
+
+.executive-template .education-date {
+  font-size: 14px;
+  color: #2c3e50;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Leadership & Achievements Section */
+.executive-template .achievement-item {
+  background: linear-gradient(135deg, rgba(44, 62, 80, 0.02) 0%, rgba(52, 73, 94, 0.02) 100%);
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #2c3e50;
+  padding: 20px 25px;
+  margin-bottom: 20px;
+  border-radius: 0 8px 8px 0;
+}
+
+.executive-template .achievement-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.executive-template .achievement-description {
+  font-size: 14px;
+  color: #4a5568;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Certifications Section */
+.executive-template .certification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.executive-template .certification-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.executive-template .certification-date {
+  font-size: 13px;
+  color: #5a6c7d;
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* Footer Section */
+.executive-template .resume-footer {
+  text-align: center;
+  padding: 30px 60px;
+  border-top: 3px double #2c3e50;
+  background: linear-gradient(135deg, rgba(44, 62, 80, 0.05) 0%, rgba(52, 73, 94, 0.05) 100%);
+}
+
+.executive-template .footer-text {
+  font-size: 12px;
+  color: #5a6c7d;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Responsive Design for Executive Template */
+@media (max-width: 768px) {
+  .executive-template .resume-header {
+    padding: 30px 25px 20px 25px;
+  }
+  
+  .executive-template .name {
+    font-size: 36px;
+  }
+  
+  .executive-template .contact {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .executive-template .contact span::before {
+    display: none;
+  }
+  
+  .executive-template .resume-section {
+    padding: 30px 25px;
+  }
+  
+  .executive-template .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .executive-template .summary-section {
+    padding: 20px 25px;
+  }
+  
+  .executive-template .summary-text::before,
+  .executive-template .summary-text::after {
+    display: none;
+  }
+}
+
+/* Print Styles for Executive Template */
+@media print {
+  .executive-template {
+    background: white;
+  }
+  
+  .executive-template .paper {
+    box-shadow: none;
+    border: 2px solid #2c3e50;
+  }
+  
+  .executive-template .paper::before {
+    background: #2c3e50 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .executive-template .summary-section,
+  .executive-template .achievement-item,
+  .executive-template .certification-item,
+  .executive-template .resume-footer {
+    background: transparent !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

@@ -1,0 +1,339 @@
+/* Modern Resume Template Styles */
+.modern-template {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #1a202c;
+}
+
+.modern-template .paper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  border: none;
+}
+
+.modern-template .resume-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px 50px;
+  text-align: center;
+  position: relative;
+}
+
+.modern-template .resume-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
+}
+
+.modern-template .name {
+  font-size: 42px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  position: relative;
+  z-index: 1;
+  letter-spacing: -0.5px;
+}
+
+.modern-template .contact {
+  font-size: 16px;
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.modern-template .contact span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modern-template .resume-section {
+  padding: 30px 50px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modern-template .resume-section:last-child {
+  border-bottom: none;
+}
+
+.modern-template .section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #667eea;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modern-template .section-title::before {
+  content: '';
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+}
+
+.modern-template .entry {
+  margin-bottom: 24px;
+}
+
+.modern-template .entry:last-child {
+  margin-bottom: 0;
+}
+
+.modern-template .entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.modern-template .entry-role {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+}
+
+.modern-template .entry-meta {
+  font-size: 14px;
+  color: #718096;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.modern-template .entry-description {
+  color: #4a5568;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.modern-template .entry-description ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+
+.modern-template .entry-description li {
+  margin-bottom: 6px;
+  color: #4a5568;
+}
+
+.modern-template .skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.modern-template .skill-category {
+  background: #f7fafc;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.modern-template .skill-category h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #667eea;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modern-template .skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.modern-template .skill-chip {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.modern-template .education-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modern-template .education-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.modern-template .education-info h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 4px 0;
+}
+
+.modern-template .education-info p {
+  font-size: 14px;
+  color: #718096;
+  margin: 0;
+}
+
+.modern-template .education-date {
+  font-size: 14px;
+  color: #718096;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Modern Template Summary Section */
+.modern-template .summary-section {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-left: 4px solid #667eea;
+}
+
+.modern-template .summary-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #4a5568;
+  font-style: italic;
+}
+
+/* Modern Template Projects Section */
+.modern-template .project-item {
+  background: #f7fafc;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.modern-template .project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.modern-template .project-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+}
+
+.modern-template .project-date {
+  font-size: 14px;
+  color: #718096;
+  font-weight: 500;
+}
+
+.modern-template .project-description {
+  font-size: 14px;
+  color: #4a5568;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.modern-template .project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.modern-template .tech-tag {
+  background: #667eea;
+  color: white;
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Responsive Design for Modern Template */
+@media (max-width: 768px) {
+  .modern-template .resume-header {
+    padding: 30px 25px;
+  }
+  
+  .modern-template .name {
+    font-size: 32px;
+  }
+  
+  .modern-template .contact {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .modern-template .resume-section {
+    padding: 25px;
+  }
+  
+  .modern-template .entry-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .modern-template .education-item {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .modern-template .project-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+/* Print Styles for Modern Template */
+@media print {
+  .modern-template {
+    background: white;
+  }
+  
+  .modern-template .paper {
+    box-shadow: none;
+    border-radius: 0;
+  }
+  
+  .modern-template .resume-header {
+    background: #667eea !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .modern-template .summary-section {
+    background: transparent !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .modern-template .skill-category,
+  .modern-template .project-item {
+    background: transparent !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

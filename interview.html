@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interview Preparation | ATS Resume Builder</title>
+  <meta name="description" content="Practice interview questions with our comprehensive interview preparation tools. Behavioral, technical, and situational questions with tips." />
+  <meta name="google-adsense-account" content="ca-pub-2396098605485959">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2396098605485959"
+     crossorigin="anonymous"></script>
+  
+  <!-- Enhanced SEO Meta Tags -->
+  <meta name="keywords" content="interview preparation, interview questions, mock interview, behavioral questions, technical interview, job interview">
+  <meta name="author" content="ATS Resume Builder">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <meta property="og:title" content="Interview Preparation Tools - ATS Resume Builder">
+  <meta property="og:description" content="Practice interview questions with our comprehensive interview preparation tools. Behavioral, technical, and situational questions with tips.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ats-resume-builder.com/interview.html">
+  <meta property="og:site_name" content="ATS Resume Builder">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Interview Preparation Tools">
+  <meta name="twitter:description" content="Practice interview questions with our comprehensive interview preparation tools.">
+  <link rel="canonical" href="https://ats-resume-builder.com/interview.html">
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Interview Preparation",
+    "description": "Practice interview questions with our comprehensive interview preparation tools. Behavioral, technical, and situational questions with tips.",
+    "url": "https://ats-resume-builder.com/interview.html",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Behavioral Interview Questions",
+          "description": "Practice common behavioral interview questions about leadership, teamwork, and problem-solving"
+        },
+        {
+          "@type": "ListItem", 
+          "position": 2,
+          "name": "Technical Interview Questions",
+          "description": "Practice coding challenges, system design, and technical problem-solving questions"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Situational Interview Questions",
+          "description": "Practice handling difficult workplace scenarios and ethical dilemmas"
+        }
+      ]
+    }
+  }
+  </script>
+  
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./cookie-consent.css" />
+  <link rel="stylesheet" href="./interview.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html">ATS Resume Builder</a>
+      <nav class="nav">
+        <a href="./builder.html">Resume</a>
+        <a href="./cover-letter.html">Cover Letter</a>
+        <a href="./ats.html">ATS Checker</a>
+        <a href="./guides/index.html">Guides</a>
+        <a href="./examples.html">Examples</a>
+        <a href="./templates.html">Templates</a>
+        <a class="active" href="./interview.html">Interview Prep</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container narrow">
+    <h1>🎤 Interview Preparation Tools</h1>
+    <p class="muted">Practice your interview skills with our comprehensive question bank and mock interview simulator.</p>
+
+    <!-- Interview Type Selection -->
+    <div class="interview-types">
+      <h3>Choose Interview Type</h3>
+      <div class="type-grid">
+        <div class="type-card" onclick="InterviewPrep.startMockInterview('behavioral')">
+          <div class="type-icon">🤝</div>
+          <h4>Behavioral Questions</h4>
+          <p>Practice common behavioral interview questions about leadership, teamwork, and problem-solving.</p>
+        </div>
+        <div class="type-card" onclick="InterviewPrep.startMockInterview('technical')">
+          <div class="type-icon">💻</div>
+          <h4>Technical Questions</h4>
+          <p>Practice coding challenges, system design, and technical problem-solving questions.</p>
+        </div>
+        <div class="type-card" onclick="InterviewPrep.startMockInterview('situational')">
+          <div class="type-icon">🎯</div>
+          <h4>Situational Questions</h4>
+          <p>Practice handling difficult workplace scenarios and ethical dilemmas.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question Bank -->
+    <div class="question-bank">
+      <h3>Interview Question Bank</h3>
+      <div class="bank-sections">
+        <div class="bank-section">
+          <h4>📝 Behavioral Questions</h4>
+          <div class="question-list" id="behavioral-questions">
+            <div class="question-item">
+              <div class="question-number">Q1</div>
+              <div class="question-text">Tell me about a time when you demonstrated leadership.</div>
+              <div class="question-followup">What was the outcome?</div>
+              <button class="btn btn-sm btn-outline" onclick="InterviewPrep.practiceQuestion('behavioral', 0)">
+                Practice
+              </button>
+            </div>
+            <div class="question-item">
+              <div class="question-number">Q2</div>
+              <div class="question-text">Describe a challenge you faced and how you overcame it.</div>
+              <div class="question-followup">What did you learn from this experience?</div>
+              <button class="btn btn-sm btn-outline" onclick="InterviewPrep.practiceQuestion('behavioral', 1)">
+                Practice
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bank-section">
+          <h4>💻 Technical Questions</h4>
+          <div class="question-list" id="technical-questions">
+            <div class="question-item">
+              <div class="question-number">Q1</div>
+              <div class="question-text">What technical challenge are you most proud of overcoming?</div>
+              <div class="question-followup">What technologies did you use?</div>
+              <button class="btn btn-sm btn-outline" onclick="InterviewPrep.practiceQuestion('technical', 0)">
+                Practice
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bank-section">
+          <h4>🎯 Situational Questions</h4>
+          <div class="question-list" id="situational-questions">
+            <div class="question-item">
+              <div class="question-number">Q1</div>
+              <div class="question-text">How do you handle tight deadlines or high-pressure situations?</div>
+              <div class="question-followup">Can you give an example?</div>
+              <button class="btn btn-sm btn-outline" onclick="InterviewPrep.practiceQuestion('situational', 0)">
+                Practice
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips Section -->
+    <div class="interview-tips">
+      <h3>💡 Interview Tips</h3>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <h4>Research Company</h4>
+          <p>Study their products, culture, and recent news. Tailor your answers accordingly.</p>
+        </div>
+        <div class="tip-card">
+          <h4>Use STAR Method</h4>
+          <p>Structure your answers: Situation, Task, Action, Result. Be specific and quantifiable.</p>
+        </div>
+        <div class="tip-card">
+          <h4>Ask Great Questions</h4>
+          <p>Prepare thoughtful questions about role, team, and company culture.</p>
+        </div>
+        <div class="tip-card">
+          <h4>Practice Aloud</h4>
+          <p>Record yourself answering questions and review your performance.</p>
+        </div>
+        <div class="tip-card">
+          <h4>Body Language Matters</h4>
+          <p>Maintain good posture, eye contact, and confident speaking pace.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ad Slot -->
+    <div id="ad-content-3" class="ad-slot" aria-label="Advertisement">
+      <div class="ad-label">Advertisement</div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="muted">© <span id="year"></span> ATS Resume Builder</div>
+      <div class="footer-links">
+        <a href="./privacy.html">Privacy</a>
+        <a href="./terms.html">Terms</a>
+        <a href="./about.html">About</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./site.js"></script>
+  <script src="./cookie-consent.js"></script>
+  <script src="./analytics.js"></script>
+  <script src="./adsense-config.js"></script>
+  <script src="./i18n.js"></script>
+  <script src="./pwa.js"></script>
+  <script src="./interview-prep.js"></script>
+</body>
+</html>

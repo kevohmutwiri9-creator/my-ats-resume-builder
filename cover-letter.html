@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cover Letter | ATS Resume Builder</title>
+  <meta name="description" content="Write a professional cover letter that matches a job description. Autosave and PDF export." />
+  <meta name="google-adsense-account" content="ca-pub-2396098605485959">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2396098605485959"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="builder-body">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html">ATS Resume Builder</a>
+      <nav class="nav">
+        <a href="./builder.html">Resume</a>
+        <a class="active" href="./cover-letter.html">Cover Letter</a>
+        <a href="./ats.html">ATS Checker</a>
+        <a href="./guides/index.html">Guides</a>
+        <a href="./templates.html">Templates</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container builder-layout">
+    <aside class="panel">
+      <div class="panel-header">
+        <h1 class="panel-title">Cover Letter</h1>
+        <div class="panel-subtitle muted">Autosave is on. Export as PDF anytime.</div>
+      </div>
+
+      <div class="toolbar">
+        <button class="btn btn-primary" id="exportPdfBtn" type="button">Export PDF</button>
+        <button class="btn btn-ghost" id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="fullName">Full name</label>
+          <input id="fullName" type="text" placeholder="Jane Doe" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="jane@email.com" autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" type="tel" placeholder="+1 555 123 4567" autocomplete="tel" />
+        </div>
+        <div class="field">
+          <label for="location">Location</label>
+          <input id="location" type="text" placeholder="City, Country" autocomplete="address-level2" />
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>Job + Company</h2>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="role">Target role</label>
+          <input id="role" type="text" placeholder="Backend Engineer" />
+        </div>
+        <div class="field">
+          <label for="company">Company</label>
+          <input id="company" type="text" placeholder="Company Name" />
+        </div>
+        <div class="field">
+          <label for="hiringManager">Hiring manager (optional)</label>
+          <input id="hiringManager" type="text" placeholder="Hiring Manager" />
+        </div>
+        <div class="field">
+          <label for="jobLocation">Job location (optional)</label>
+          <input id="jobLocation" type="text" placeholder="Remote" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="opening">Opening paragraph</label>
+        <textarea id="opening" rows="4" placeholder="Why you’re applying and the value you bring..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="body">Main paragraph(s)</label>
+        <textarea id="body" rows="8" placeholder="2–3 achievements mapped to the job description. Quantify impact."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="closing">Closing paragraph</label>
+        <textarea id="closing" rows="4" placeholder="Call to action + thank you..."></textarea>
+      </div>
+
+      <div class="ad-slot" aria-label="Ad slot placeholder">
+        <div class="ad-label">Ad</div>
+        <div class="ad-box">AdSense Placeholder</div>
+      </div>
+
+      <div class="muted tiny">Tip: Cover letters work best when you match 2–3 key requirements and prove them with results.</div>
+    </aside>
+
+    <section class="preview" aria-label="Cover letter preview">
+      <div class="preview-top">
+        <div class="preview-title">Preview</div>
+        <div class="muted tiny" id="saveStatus">Saved</div>
+      </div>
+
+      <article class="paper" id="paper">
+        <header class="resume-header">
+          <h1 class="name" id="pName">Your Name</h1>
+          <div class="contact" id="pContact"></div>
+        </header>
+
+        <section class="resume-section">
+          <div class="text" id="pDate"></div>
+          <div class="text" id="pTo"></div>
+        </section>
+
+        <section class="resume-section">
+          <div class="text" id="pGreeting"></div>
+        </section>
+
+        <section class="resume-section">
+          <div class="text" id="pOpening"></div>
+        </section>
+
+        <section class="resume-section">
+          <div class="text" id="pBody"></div>
+        </section>
+
+        <section class="resume-section">
+          <div class="text" id="pClosing"></div>
+        </section>
+
+        <section class="resume-section">
+          <div class="text" id="pSignature"></div>
+        </section>
+      </article>
+
+      <div class="print-hint muted tiny">Export uses your browser Print dialog. Choose “Save as PDF”.</div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="muted">© <span id="year"></span> ATS Resume Builder</div>
+      <div class="footer-links">
+        <a href="./privacy.html">Privacy</a>
+        <a href="./terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./site.js"></script>
+  <script src="./ai-greeter.js"></script>
+  <script src="./cover-letter.js"></script>
+</body>
+</html>

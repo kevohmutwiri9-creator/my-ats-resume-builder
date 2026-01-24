@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ATS Checker | ATS Resume Builder</title>
+  <meta name="description" content="Check your resume against ATS systems. Get keyword match scores and optimization tips." />
+  <meta name="google-adsense-account" content="ca-pub-2396098605485959">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2396098605485959"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html">ATS Resume Builder</a>
+      <nav class="nav">
+        <a href="./builder.html">Resume</a>
+        <a href="./cover-letter.html">Cover Letter</a>
+        <a class="active" href="./ats.html">ATS Checker</a>
+        <a href="./guides/index.html">Guides</a>
+        <a href="./templates.html">Templates</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container narrow">
+    <h1>ATS Keyword Match Checker</h1>
+    <p class="muted">Paste a job description and your resume text. You’ll get a keyword match score and missing keywords to consider adding (honestly).</p>
+
+    <div class="ad-slot" aria-label="Ad slot placeholder">
+      <div class="ad-label">Ad</div>
+      <div class="ad-box">AdSense Placeholder (Top)</div>
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label for="jobDesc">Job description</label>
+        <textarea id="jobDesc" rows="12" placeholder="Paste the job description here..."></textarea>
+      </div>
+      <div class="field">
+        <label for="resumeText">Your resume text</label>
+        <textarea id="resumeText" rows="12" placeholder="Paste your resume text here (or export from the Builder preview)..."></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-primary" id="runCheckBtn" type="button">Run Check</button>
+      <button class="btn btn-ghost" id="loadFromBuilderBtn" type="button">Load from Builder</button>
+    </div>
+
+    <section class="results" id="results" hidden>
+      <div class="score-card">
+        <div class="score">
+          <div class="score-label muted">Match score</div>
+          <div class="score-value" id="scoreValue">0%</div>
+        </div>
+        <div class="muted tiny" id="scoreNote"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Must-have keywords (matched)</div>
+          <div class="card-body" id="mustMatched"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Must-have keywords (missing)</div>
+          <div class="card-body" id="mustMissing"></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Nice-to-have keywords (matched)</div>
+          <div class="card-body" id="niceMatched"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Nice-to-have keywords (missing)</div>
+          <div class="card-body" id="niceMissing"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Formatting checks</div>
+        <div class="card-body" id="formatChecks"></div>
+      </div>
+
+      <div class="ad-slot" aria-label="Ad slot placeholder">
+        <div class="ad-label">Ad</div>
+        <div class="ad-box">AdSense Placeholder (In-Content)</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="muted">© <span id="year"></span> ATS Resume Builder</div>
+      <div class="footer-links">
+        <a href="./privacy.html">Privacy</a>
+        <a href="./terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./site.js"></script>
+  <script src="./ai-greeter.js"></script>
+  <script src="./ats.js"></script>
+</body>
+</html>
