@@ -1,4 +1,4 @@
-# Render.com Static Site Configuration
+# Render.com Static Site Service
 services:
   - type: web
     name: ats-resume-builder
