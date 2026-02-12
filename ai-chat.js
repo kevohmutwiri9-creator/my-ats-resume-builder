@@ -2,6 +2,9 @@ class AIChat {
   constructor() {
     this.isOpen = false;
     this.messages = [];
+    this.hasShownIntro = false;
+    this.conversationHistory = JSON.parse(localStorage.getItem('aiChatHistory') || '[]');
+    this.currentFileText = null;
     this.initialize();
   }
 
@@ -35,11 +38,18 @@ class AIChat {
           placeholder="Type your message here..."
           rows="1"
         ></textarea>
+        <button id="aiChatFile" class="ai-chat-file" title="Attach file or URL">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+          </svg>
+        </button>
         <button id="aiChatSend" class="ai-chat-send">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path fill="currentColor" d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
           </svg>
         </button>
+        <input type="file" id="aiChatFileInput" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
+        <input type="url" id="aiChatUrlInput" placeholder="Paste job URL" style="display:none; width:100%; margin-top:8px; padding:8px; border:1px solid rgba(31,47,87,.85); border-radius:8px; background:rgba(16,31,59,.5); color:var(--text)">
       </div>
     `;
 
@@ -76,6 +86,38 @@ class AIChat {
           this.sendMessage();
         }
       });
+    
+    // File upload
+    this.chatContainer.querySelector('#aiChatFile')
+      .addEventListener('click', () => {
+        const urlInput = this.chatContainer.querySelector('#aiChatUrlInput');
+        if (urlInput.style.display === 'block') {
+          urlInput.style.display = 'none';
+          this.chatContainer.querySelector('#aiChatFileInput').click();
+        } else {
+          this.chatContainer.querySelector('#aiChatFileInput').click();
+        }
+      });
+    
+    this.chatContainer.querySelector('#aiChatFileInput')
+      .addEventListener('change', (e) => {
+        this.handleFileUpload(e.target.files[0]);
+      });
+    
+    // Long press or right-click on file button to toggle URL input
+    this.chatContainer.querySelector('#aiChatFile')
+      .addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        const urlInput = this.chatContainer.querySelector('#aiChatUrlInput');
+        urlInput.style.display = urlInput.style.display === 'block' ? 'none' : 'block';
+      });
+    
+    this.chatContainer.querySelector('#aiChatUrlInput')
+      .addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          this.handleUrlUpload(e.target.value);
+        }
+      });
   }
 
   toggleChat(show = !this.isOpen) {
@@ -85,6 +127,12 @@ class AIChat {
     
     if (this.isOpen) {
       this.chatContainer.querySelector('#aiChatInput').focus();
+      // Load history if first open
+      if (this.messages.length === 0 && this.conversationHistory.length > 0) {
+        this.conversationHistory.forEach(m => {
+          this.addMessage(m.sender, m.text);
+        });
+      }
     }
   }
 
@@ -125,6 +173,8 @@ class AIChat {
         const resumeData = window.aiAssistant.getResumeData();
         const lowerMessage = message.toLowerCase();
 
+        const isVeryShort = lowerMessage.replace(/\s+/g, '').length <= 2;
+
         // Determine the type of request
         if (lowerMessage.includes('summary') || lowerMessage.includes('improve') || lowerMessage.includes('rewrite')) {
           const prompt = window.aiAssistant.buildPrompt('improve-summary', resumeData, '');
@@ -152,16 +202,29 @@ class AIChat {
           return "For market insights and salary information, please use the 'Market Intelligence' option in the AI Assist modal. You'll need to provide a job description or role you're interested in.";
         }
 
+        // Handle very short / non-informational inputs without repeating the generic intro
+        if (isVeryShort) {
+          return "Got it. Tell me what you want to work on: summary, bullet points, skills, or tailoring to a job description?";
+        }
+
         // Default response for general questions
-        return `I'm your AI resume assistant! I can help you with:
+        if (!this.hasShownIntro) {
+          this.hasShownIntro = true;
+          return `I'm your AI resume assistant! I can help you with:
 
 • **Improve your summary** - Make it more impactful and ATS-friendly
 • **Strengthen bullet points** - Add metrics and action verbs using STAR method
 • **Suggest relevant skills** - Add skills that match your experience and industry
 • **Tailor to job descriptions** - Customize your resume for specific roles
 • **Market intelligence** - Get salary insights and trending skills
+• **Analyze uploaded files** - PDFs, images, or web pages for context
 
-What would you like help with? You can also click the "AI Assist" button in the toolbar for more options.`;
+What would you like help with? You can also attach a file or paste a job URL. Right-click the attach button for URL input.`;
+        }
+
+        return `Thanks — can you share a bit more detail?
+
+What would you like to improve (summary, bullet points, skills), and what role are you targeting? If you paste a job description, I can tailor suggestions to it. You can also attach a file or URL for additional context.`;
 
       } catch (error) {
         console.error('AI processing error:', error);
@@ -170,7 +233,16 @@ What would you like help with? You can also click the "AI Assist" button in the 
     }
 
     // Fallback if AI assistant is not available
-    return "I'm your AI assistant. I can help you with your resume, job search, and more. How can I assist you today?";
+    const lower = (message || '').toLowerCase();
+    const isVeryShort = lower.replace(/\s+/g, '').length <= 2;
+    if (isVeryShort) {
+      return "Tell me what you want help with: summary, bullet points, skills, or tailoring to a job description.";
+    }
+    if (!this.hasShownIntro) {
+      this.hasShownIntro = true;
+      return "I'm your AI assistant. I can help you improve your resume (summary, bullet points, skills) or tailor it to a job description. What are you working on?";
+    }
+    return "What role are you targeting, and which section should we improve (summary, experience bullets, skills)?";
   }
 
   formatAISuggestions(suggestions, type) {
@@ -209,6 +281,10 @@ What would you like help with? You can also click the "AI Assist" button in the 
     
     messagesContainer.appendChild(messageElement);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    
+    // Save to history
+    this.conversationHistory.push({ sender, text, time: new Date().toISOString() });
+    localStorage.setItem('aiChatHistory', JSON.stringify(this.conversationHistory));
   }
 
   showTypingIndicator() {
@@ -257,6 +333,62 @@ What would you like help with? You can also click the "AI Assist" button in the 
   adjustTextareaHeight(textarea) {
     textarea.style.height = 'auto';
     textarea.style.height = (textarea.scrollHeight) + 'px';
+  }
+
+  async handleFileUpload(file) {
+    if (!file) return;
+    const typingId = this.showTypingIndicator();
+    try {
+      const text = await this.extractTextFromFile(file);
+      this.currentFileText = text;
+      this.addMessage('user', `Uploaded ${file.name}: ${text.substring(0, 100)}...`);
+    } catch (error) {
+      this.addMessage('ai', 'Failed to extract text from file. Supported formats: PDF, JPG, PNG.');
+    }
+    this.removeTypingIndicator(typingId);
+  }
+
+  async handleUrlUpload(url) {
+    if (!url) return;
+    const typingId = this.showTypingIndicator();
+    try {
+      const text = await this.extractTextFromUrl(url);
+      this.currentFileText = text;
+      this.addMessage('user', `Fetched ${url}: ${text.substring(0, 100)}...`);
+      this.chatContainer.querySelector('#aiChatUrlInput').style.display = 'none';
+      this.chatContainer.querySelector('#aiChatUrlInput').value = '';
+    } catch (error) {
+      this.addMessage('ai', 'Failed to fetch or extract text from URL.');
+    }
+    this.removeTypingIndicator(typingId);
+  }
+
+  async extractTextFromFile(file) {
+    const fileType = file.type;
+    if (fileType === 'application/pdf') {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let text = '';
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        text += textContent.items.map(item => item.str).join(' ') + '\n';
+      }
+      return text;
+    } else if (fileType.startsWith('image/')) {
+      const { data: { text } } = await Tesseract.recognize(file);
+      return text;
+    } else {
+      throw new Error('Unsupported file type');
+    }
+  }
+
+  async extractTextFromUrl(url) {
+    const response = await fetch(url);
+    const html = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    return doc.body.textContent || doc.body.innerText || 'No text found';
   }
 }
 

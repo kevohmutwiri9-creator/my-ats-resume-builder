@@ -260,19 +260,37 @@ window.Onboarding = {
     const target = document.querySelector(step.target);
     if (!target) return;
 
+    // Scroll target into view first so measurements are stable
+    try {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    } catch (e) {
+      // ignore
+    }
+
     const highlight = document.getElementById('onboarding-highlight');
     if (!highlight) return;
 
     const rect = target.getBoundingClientRect();
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
-    // Position and style the highlight
+
+    // Clamp highlight to viewport so it never renders as an oversized box
+    const pad = 6;
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    const top = Math.max(pad, rect.top - pad);
+    const left = Math.max(pad, rect.left - pad);
+    const right = Math.min(vw - pad, rect.right + pad);
+    const bottom = Math.min(vh - pad, rect.bottom + pad);
+    const width = Math.max(0, right - left);
+    const height = Math.max(0, bottom - top);
+
+    // Use fixed positioning so we don't have to manually account for scroll offsets
     highlight.style.cssText = `
-      position: absolute;
-      top: ${rect.top + scrollTop - 5}px;
-      left: ${rect.left - 5}px;
-      width: ${rect.width + 10}px;
-      height: ${rect.height + 10}px;
+      position: fixed;
+      top: ${top}px;
+      left: ${left}px;
+      width: ${width}px;
+      height: ${height}px;
       border: 3px solid #7c5cff;
       border-radius: 8px;
       background: rgba(124, 92, 255, 0.1);
@@ -281,9 +299,6 @@ window.Onboarding = {
       animation: pulse 2s ease-in-out infinite;
       box-shadow: 0 0 20px rgba(124, 92, 255, 0.3);
     `;
-
-    // Scroll target into view
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
   },
 
   // Remove highlight
