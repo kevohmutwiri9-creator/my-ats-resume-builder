@@ -29,6 +29,28 @@ function tokenizeWords(s) {
   return n.split(' ').filter((w) => w && w.length >= 3 && !ATS_STOPWORDS.has(w));
 }
 
+function buildNGrams(words, n) {
+  const out = [];
+  for (let i = 0; i + n <= words.length; i++) {
+    const gram = words.slice(i, i + n).join(' ');
+    if (gram.length >= 6) out.push(gram);
+  }
+  return out;
+}
+
+function countOccurrences(haystack, needle) {
+  if (!haystack || !needle) return 0;
+  let count = 0;
+  let idx = 0;
+  while (true) {
+    const found = haystack.indexOf(needle, idx);
+    if (found === -1) break;
+    count++;
+    idx = found + needle.length;
+  }
+  return count;
+}
+
 function guessSections(jobDesc) {
   const lines = String(jobDesc || '').split(/\r?\n/);
   const joined = normalize(jobDesc);
@@ -67,8 +89,28 @@ function extractWeightedKeywords(text, phraseWeight, wordWeight, maxItems) {
     keywords.set(w, (keywords.get(w) || 0) + wordWeight);
   }
 
-  const sorted = [...keywords.entries()].sort((a,b) => b[1]-a[1]);
-  return sorted.slice(0, maxItems).map(([k, w]) => ({ k, w }));
+  // Add lightweight n-gram extraction to catch common multi-word skills/tools.
+  // We keep this conservative to avoid noisy phrases.
+  const bigrams = buildNGrams(words, 2);
+  const trigrams = buildNGrams(words, 3);
+  for (const g of bigrams.concat(trigrams)) {
+    if (ATS_STOPWORDS.has(g.split(' ')[0])) continue;
+    const occ = countOccurrences(n, g);
+    if (occ >= 2) {
+      keywords.set(g, (keywords.get(g) || 0) + (phraseWeight - 1));
+    }
+  }
+
+  // Prefer longer phrases over single words when they overlap (e.g. "project management" vs "project").
+  const sorted = [...keywords.entries()].sort((a,b) => b[1]-a[1] || b[0].length - a[0].length);
+  const picked = [];
+  for (const [k, w] of sorted) {
+    if (picked.length >= maxItems) break;
+    const overlaps = picked.some((p) => p.k.includes(k) || k.includes(p.k));
+    if (overlaps && k.split(' ').length === 1) continue;
+    picked.push({ k, w });
+  }
+  return picked;
 }
 
 function extractKeywordGroups(jobDesc) {
@@ -157,13 +199,15 @@ function run() {
   const mustRes = matchGroup(groups.must, resumeText);
   const niceRes = matchGroup(groups.nice, resumeText);
 
-  const score = Math.round((mustRes.score * 0.7) + (niceRes.score * 0.3));
+  const score = Math.round((mustRes.score * 0.75) + (niceRes.score * 0.25));
 
   $('results').hidden = false;
   $('scoreValue').textContent = score + '%';
-  $('scoreNote').textContent = score >= 75
-    ? 'Strong match. Make sure every keyword you use is supported by real experience and achievements.'
-    : 'Improve match by addressing must-have requirements first, then add nice-to-haves where they honestly apply.';
+  $('scoreNote').textContent = score >= 80
+    ? 'Strong match. Prioritize clarity: keep the keywords, but back them up with measurable achievements.'
+    : score >= 60
+      ? 'Moderate match. Fill the most important missing must-have keywords where they truthfully reflect your work.'
+      : 'Low match. Start by aligning your summary + top experience bullets with the must-have requirements.';
 
   renderWeightedTags($('mustMatched'), mustRes.matched.slice(0, 18));
   renderWeightedTags($('mustMissing'), mustRes.missing.slice(0, 18));

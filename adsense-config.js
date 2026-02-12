@@ -45,9 +45,9 @@ function initializeAds() {
     }
   }
   
-  // Check if analytics category is enabled
-  if (!consentData || !consentData.categories || !consentData.categories.analytics) {
-    console.log('AdSense blocked: No cookie consent for analytics');
+  // Check if marketing category is enabled (ads)
+  if (!consentData || !consentData.categories || !consentData.categories.marketing) {
+    console.log('AdSense blocked: No cookie consent for marketing');
     return;
   }
 
@@ -105,9 +105,16 @@ function initializeAllAds() {
 
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  // Wait for cookie consent system to be ready
-  setTimeout(initializeAllAds, 1000);
+  initializeAllAds();
 });
 
 // Re-initialize ads when cookie consent is given
 window.addEventListener('cookieConsentGiven', initializeAllAds);
+
+// Re-initialize / disable ads when preferences change
+window.addEventListener('cookieConsentUpdated', (e) => {
+  const marketingOn = Boolean(e?.detail?.categories?.marketing);
+  if (marketingOn) {
+    initializeAllAds();
+  }
+});

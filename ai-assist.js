@@ -9,6 +9,7 @@ class AIAssistant {
     this.targetSection = document.getElementById('aiTarget');
     this.inputSection = document.querySelector('.ai-input-section');
     this.webSearch = new WebSearchAI();
+    this._isProcessing = false;
     
     this.init();
   }
@@ -42,6 +43,15 @@ class AIAssistant {
     this.suggestions.innerHTML = '';
     this.targetSection.value = '';
     this.inputSection.style.display = 'none';
+    this.setActionsEnabled(true);
+    this._isProcessing = false;
+  }
+
+  setActionsEnabled(enabled) {
+    const buttons = this.modal?.querySelectorAll('[data-ai-action]') || [];
+    buttons.forEach((btn) => {
+      btn.disabled = !enabled;
+    });
   }
 
   handleAction(action) {
@@ -57,6 +67,9 @@ class AIAssistant {
   }
 
   async processAction(action) {
+    if (this._isProcessing) return;
+    this._isProcessing = true;
+    this.setActionsEnabled(false);
     this.showLoading();
     
     try {
@@ -72,6 +85,7 @@ class AIAssistant {
       let prompt = this.buildPrompt(action, resumeData, targetJob);
       let suggestions = await this.generateSuggestions(prompt);
       
+      this._lastSuggestions = suggestions;
       this.displaySuggestions(suggestions, action);
       
       // Track AI usage
@@ -86,6 +100,9 @@ class AIAssistant {
       if (typeof Analytics !== 'undefined') {
         Analytics.trackError('AI Assistant: ' + error.message, 'ai-assist');
       }
+    } finally {
+      this._isProcessing = false;
+      this.setActionsEnabled(true);
     }
   }
 
@@ -441,26 +458,58 @@ Education: ${data.education.map(e => `${e.degree} from ${e.school}`).join('\n')}
   }
 
   hasSkill(skill) {
-    const existingSkills = document.querySelectorAll('#skillsList .skill-text');
-    return Array.from(existingSkills).some(el => el.textContent === skill);
+    const s = String(skill || '').trim();
+    if (!s) return false;
+
+    // Prefer builder state if available
+    try {
+      const raw = localStorage.getItem('ats_resume_builder_v1');
+      if (raw) {
+        const state = JSON.parse(raw);
+        const skills = Array.isArray(state?.skills) ? state.skills : [];
+        return skills.some((x) => String(x || '').trim().toLowerCase() === s.toLowerCase());
+      }
+    } catch {}
+
+    // Fallback to DOM check
+    const pills = document.querySelectorAll('#skillsList .pill span');
+    return Array.from(pills).some(el => String(el.textContent || '').trim().toLowerCase() === s.toLowerCase());
   }
 
   addSkill(skill) {
+    const s = String(skill || '').trim();
+    if (!s) return;
+    if (this.hasSkill(s)) return;
+
+    // If builder state exists, update it directly so autosave/preview stay consistent.
+    try {
+      const raw = localStorage.getItem('ats_resume_builder_v1');
+      if (raw) {
+        const state = JSON.parse(raw);
+        const next = Array.isArray(state?.skills) ? [...state.skills] : [];
+        next.push(s);
+        state.skills = next;
+        localStorage.setItem('ats_resume_builder_v1', JSON.stringify(state));
+
+        // If we're on the builder page, a full reload is the safest way to let builder.js
+        // re-bind state without adding cross-file coupling.
+        if (document.body?.classList?.contains('builder-body')) {
+          location.reload();
+        }
+        return;
+      }
+    } catch (e) {
+      console.warn('Failed to update builder state skills:', e);
+    }
+
+    // Fallback: append to DOM (non-persistent)
     const skillsList = document.getElementById('skillsList');
     if (!skillsList) return;
-    
-    const pill = document.createElement('div');
-    pill.className = 'skill-pill';
-    pill.innerHTML = `
-      <span class="skill-text">${skill}</span>
-      <button class="skill-remove" type="button">&times;</button>
-    `;
-    
-    pill.querySelector('.skill-remove').addEventListener('click', () => pill.remove());
+    const pill = document.createElement('span');
+    pill.className = 'pill';
+    pill.innerHTML = `<span>${s}</span><button type="button" aria-label="Remove skill">×</button>`;
+    pill.querySelector('button')?.addEventListener('click', () => pill.remove());
     skillsList.appendChild(pill);
-    
-    // Trigger save
-    document.dispatchEvent(new Event('input'));
   }
 
   showError(message) {

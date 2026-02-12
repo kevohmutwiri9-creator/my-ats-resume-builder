@@ -130,6 +130,18 @@ function saveState(state) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+function setButtonBusy(btn, busy, busyText) {
+  if (!btn) return () => {};
+  const originalText = btn.textContent;
+  const originalDisabled = btn.disabled;
+  btn.disabled = Boolean(busy);
+  if (busy && busyText) btn.textContent = busyText;
+  return () => {
+    btn.disabled = originalDisabled;
+    btn.textContent = originalText;
+  };
+}
+
 function setSaveStatus(text) {
   const el = $('saveStatus');
   if (el) {
@@ -504,7 +516,10 @@ function attachButtons(state) {
   });
 
   $('exportPdfBtn').addEventListener('click', async () => {
-    const removeSpinner = showLoadingSpinner($('exportPdfBtn'));
+    const exportBtn = $('exportPdfBtn');
+    if (!exportBtn || exportBtn.disabled) return;
+    const restoreBtn = setButtonBusy(exportBtn, true, 'Exporting…');
+    const removeSpinner = showLoadingSpinner(exportBtn);
 
     try {
       saveState(state);
@@ -520,6 +535,7 @@ function attachButtons(state) {
       showToast('Failed to export PDF. Please try again.', 'error');
     } finally {
       removeSpinner();
+      restoreBtn();
     }
   });
 

@@ -57,52 +57,48 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch event - disabled to prevent redirect errors
-// self.addEventListener('fetch', (event) => {
-//   // Skip chrome-extension requests
-//   if (event.request.url.startsWith('chrome-extension://')) {
-//     return new Response('Chrome extension requests are not supported', { status: 400 });
-//   }
+// Handle update flow triggered from the page
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
 
-//   event.respondWith(
-//     caches.match(event.request)
-//       .then((response) => {
-//         // Cache hit - return response
-//         if (response) {
-//           return response;
-//         }
+// Fetch event - cache-first for same-origin GET requests, network passthrough otherwise.
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
 
-//         // Network request - let browser handle redirects naturally
-//         return fetch(event.request).then((response) => {
-//           // Check if valid response
-//           if (!response || response.status === 0 || response.type === 'opaque') {
-//             return new Response('Network error', { status: 500 });
-//           }
+  // Skip non-GET
+  if (req.method !== 'GET') return;
 
-//           // Clone response for caching
-//           const responseToCache = response.clone();
-          
-//           // Only cache successful responses
-//           if (response.ok && response.type === 'basic') {
-//             caches.open(CACHE_NAME)
-//               .then((cache) => {
-//                 cache.put(event.request, responseToCache);
-//               })
-//               .catch((error) => {
-//                 console.error('Failed to cache response:', error);
-//               });
-//           }
-          
-//           return response;
-//         })
-//         .catch((error) => {
-//           console.error('Network request failed:', error);
-//           // Network failed, try to serve from cache
-//           return caches.match(event.request);
-//         });
-//       })
-//   );
-// });
+  const url = new URL(req.url);
+
+  // Skip chrome-extension and cross-origin (ads, analytics, APIs)
+  if (url.protocol === 'chrome-extension:' || url.origin !== self.location.origin) return;
+
+  const isNavigation = req.mode === 'navigate' || (req.destination === '' && req.headers.get('accept')?.includes('text/html'));
+
+  event.respondWith(
+    caches.match(req).then((cached) => {
+      if (cached) return cached;
+
+      return fetch(req)
+        .then((resp) => {
+          // Only cache successful same-origin basic responses
+          if (resp && resp.ok && resp.type === 'basic') {
+            const copy = resp.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, copy)).catch(() => {});
+          }
+          return resp;
+        })
+        .catch(() => {
+          // Offline fallback for navigations
+          if (isNavigation) return caches.match('/index.html');
+          return cached;
+        });
+    })
+  );
+});
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {

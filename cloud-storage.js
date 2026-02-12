@@ -19,6 +19,7 @@ window.CloudStorage = {
 
   currentProvider: null,
   isAuthenticated: false,
+  _busy: false,
 
   init: function() {
     this.checkAuthStatus();
@@ -262,6 +263,10 @@ window.CloudStorage = {
       return;
     }
 
+    if (this._busy) return;
+    this._busy = true;
+    this.setModalButtonsDisabled(true);
+
     const resumeData = this.getResumeData();
     const fileName = `resume_${new Date().toISOString().split('T')[0]}.json`;
 
@@ -270,6 +275,14 @@ window.CloudStorage = {
     } else if (this.currentProvider === 'dropbox') {
       this.saveToDropbox(resumeData, fileName);
     }
+  },
+
+  setModalButtonsDisabled: function(disabled) {
+    const modal = document.getElementById('cloudModal');
+    if (!modal) return;
+    modal.querySelectorAll('button').forEach((btn) => {
+      btn.disabled = Boolean(disabled);
+    });
   },
 
   // Save to Google Drive
@@ -306,6 +319,10 @@ window.CloudStorage = {
     .catch(error => {
       console.error('Google Drive save error:', error);
       this.showCloudResult('error', 'Failed to save to Google Drive');
+    })
+    .finally(() => {
+      this._busy = false;
+      this.setModalButtonsDisabled(false);
     });
   },
 
@@ -336,6 +353,10 @@ window.CloudStorage = {
     .catch(error => {
       console.error('Dropbox save error:', error);
       this.showCloudResult('error', 'Failed to save to Dropbox');
+    })
+    .finally(() => {
+      this._busy = false;
+      this.setModalButtonsDisabled(false);
     });
   },
 
@@ -345,6 +366,10 @@ window.CloudStorage = {
       this.showError('Please connect to a cloud storage provider first');
       return;
     }
+
+    if (this._busy) return;
+    this._busy = true;
+    this.setModalButtonsDisabled(true);
 
     if (this.currentProvider === 'google') {
       this.loadFromGoogleDrive();
@@ -373,6 +398,10 @@ window.CloudStorage = {
     .catch(error => {
       console.error('Google Drive load error:', error);
       this.showCloudResult('error', 'Failed to load from Google Drive');
+    })
+    .finally(() => {
+      this._busy = false;
+      this.setModalButtonsDisabled(false);
     });
   },
 
@@ -396,6 +425,10 @@ window.CloudStorage = {
     .catch(error => {
       console.error('Dropbox load error:', error);
       this.showCloudResult('error', 'Failed to load from Dropbox');
+    })
+    .finally(() => {
+      this._busy = false;
+      this.setModalButtonsDisabled(false);
     });
   },
 
