@@ -78,24 +78,25 @@ const InterviewPrepHub = (() => {
   ];
 
   /**
-   * Create interview prep button
+   * Create interview prep button in toolbar
    */
   function createPrepButton() {
-    const nav = document.querySelector('.nav');
-    if (!nav) return;
+    const toolbar = document.querySelector('.toolbar');
+    if (!toolbar) return;
 
-    const prepLink = document.createElement('a');
-    prepLink.href = '#interview';
-    prepLink.className = 'nav-link interview-prep-link';
-    prepLink.innerHTML = '🎤 Interview';
-    prepLink.style.cursor = 'pointer';
+    const prepBtn = document.createElement('button');
+    prepBtn.className = 'btn btn-ghost';
+    prepBtn.id = 'interview-prep-btn';
+    prepBtn.innerHTML = '🎤 Interview';
+    prepBtn.setAttribute('aria-label', 'Interview preparation');
+    prepBtn.title = 'Open interview preparation hub';
 
-    prepLink.addEventListener('click', (e) => {
+    prepBtn.addEventListener('click', (e) => {
       e.preventDefault();
       showInterviewHub();
     });
 
-    nav.appendChild(prepLink);
+    toolbar.appendChild(prepBtn);
   }
 
   /**

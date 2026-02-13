@@ -15,24 +15,25 @@ const JobTracker = (() => {
   ];
 
   /**
-   * Create tracker button
+   * Create tracker button in toolbar
    */
   function createTrackerButton() {
-    const nav = document.querySelector('.nav');
-    if (!nav) return;
+    const toolbar = document.querySelector('.toolbar');
+    if (!toolbar) return;
 
-    const trackerLink = document.createElement('a');
-    trackerLink.href = '#tracker';
-    trackerLink.className = 'nav-link job-tracker-link';
-    trackerLink.innerHTML = '💼 Job Tracker';
-    trackerLink.style.cursor = 'pointer';
+    const trackerBtn = document.createElement('button');
+    trackerBtn.className = 'btn btn-ghost';
+    trackerBtn.id = 'job-tracker-btn';
+    trackerBtn.innerHTML = '💼 Tracker';
+    trackerBtn.setAttribute('aria-label', 'Job application tracker');
+    trackerBtn.title = 'Track job applications and interviews';
 
-    trackerLink.addEventListener('click', (e) => {
+    trackerBtn.addEventListener('click', (e) => {
       e.preventDefault();
       showTracker();
     });
 
-    nav.appendChild(trackerLink);
+    toolbar.appendChild(trackerBtn);
   }
 
   /**
