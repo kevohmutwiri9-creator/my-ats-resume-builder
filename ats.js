@@ -219,9 +219,57 @@ function run() {
 }
 
 (function init(){
-  $('runCheckBtn').addEventListener('click', run);
+  $('runCheckBtn').addEventListener('click', () => {
+    const jobDesc = $('jobDesc').value?.trim();
+    const resumeText = $('resumeText').value?.trim();
+
+    if (!jobDesc || !resumeText) {
+      Utils.showWarning('Please paste both job description and resume text');
+      return;
+    }
+
+    try {
+      const btn = $('runCheckBtn');
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Analyzing…';
+
+      // Run check (sync, but we disable button for UX)
+      setTimeout(() => {
+        try {
+          run();
+          Utils.showSuccess('Analysis complete');
+          
+          if (typeof Analytics !== 'undefined') {
+            Analytics.trackATSChecker('run_check');
+          }
+        } catch (error) {
+          console.error('Check error:', error);
+          Utils.showError('Failed to run analysis');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+      }, 100);
+    } catch (error) {
+      console.error('Setup error:', error);
+      Utils.showError('Error running ATS check');
+    }
+  });
+
   $('loadFromBuilderBtn').addEventListener('click', () => {
-    const t = localStorage.getItem('ats_resume_plaintext_v1') || '';
-    $('resumeText').value = t;
+    try {
+      const t = Utils.getStorage('ats_resume_plaintext_v1') || '';
+      if (!t) {
+        Utils.showInfo('No saved resume found. Use Resume Builder first.');
+        return;
+      }
+      $('resumeText').value = t;
+      Utils.showSuccess('Resume loaded from builder');
+    } catch (error) {
+      console.error('Load error:', error);
+      Utils.showError('Failed to load resume');
+    }
   });
 })();
+

@@ -117,17 +117,19 @@ const TEMPLATES = {
 
 function loadState() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultState();
-    const parsed = JSON.parse(raw);
-    return { ...defaultState(), ...parsed };
-  } catch {
+    const state = Utils.getStorage(STORAGE_KEY);
+    return state ? { ...defaultState(), ...state } : defaultState();
+  } catch (error) {
+    console.error('Failed to load state:', error);
     return defaultState();
   }
 }
 
 function saveState(state) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  const success = Utils.setStorage(STORAGE_KEY, state);
+  if (!success) {
+    setSaveStatus('Save failed');
+  }
 }
 
 function setButtonBusy(btn, busy, busyText) {
@@ -156,11 +158,9 @@ function validateField(field, value, type) {
 
   switch (type) {
     case 'email':
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(trimmed);
+      return Utils.isValidEmail(trimmed);
     case 'phone':
-      const phoneRegex = /^[\+]?[\d\s\(\)\-\.]{7,}$/;
-      return phoneRegex.test(trimmed);
+      return Utils.isValidPhone(trimmed);
     default:
       return true;
   }
@@ -170,26 +170,31 @@ function showFieldError(fieldId, message) {
   const field = $(fieldId);
   if (!field) return;
 
-  field.style.borderColor = 'var(--danger)';
-  field.style.boxShadow = '0 0 0 3px rgba(255,77,109,0.18)';
-
+  const fieldWrapper = field.parentNode;
+  fieldWrapper.classList.add('field-error');
+  
   // Remove existing error message
-  const existingError = field.parentNode.querySelector('.field-error');
+  const existingError = fieldWrapper.querySelector('.field-error-msg');
   if (existingError) existingError.remove();
 
   const errorEl = document.createElement('div');
-  errorEl.className = 'field-error';
+  errorEl.className = 'field-error-msg';
+  errorEl.setAttribute('role', 'alert');
   errorEl.textContent = message;
-  errorEl.style.color = 'var(--danger)';
-  errorEl.style.fontSize = '12px';
-  errorEl.style.marginTop = '4px';
-  field.parentNode.appendChild(errorEl);
+  fieldWrapper.appendChild(errorEl);
 
   setTimeout(() => {
-    field.style.borderColor = '';
-    field.style.boxShadow = '';
+    fieldWrapper.classList.remove('field-error');
     if (errorEl.parentNode) errorEl.remove();
-  }, 3000);
+  }, 4000);
+}
+
+function showFieldSuccess(fieldId) {
+  const field = $(fieldId);
+  if (!field) return;
+  const fieldWrapper = field.parentNode;
+  fieldWrapper.classList.add('field-success');
+  setTimeout(() => fieldWrapper.classList.remove('field-success'), 2000);
 }
 
 function bindBasicFields(state) {
@@ -234,11 +239,19 @@ function persist(state) {
   setSaveStatus('Saving…');
   if (persistTimer) window.clearTimeout(persistTimer);
   persistTimer = window.setTimeout(() => {
-    saveState(state);
     try {
-      localStorage.setItem('ats_resume_plaintext_v1', resumeToPlainText(state));
-    } catch {}
-    setSaveStatus('Saved');
+      saveState(state);
+      const plaintext = resumeToPlainText(state);
+      Utils.setStorage('ats_resume_plaintext_v1', plaintext);
+      setSaveStatus('Saved');
+      if (typeof Analytics !== 'undefined') {
+        Analytics.trackResumeBuilder('autosave');
+      }
+    } catch (error) {
+      console.error('Persist error:', error);
+      setSaveStatus('Save failed');
+      Utils.showError('Failed to save resume data');
+    }
   }, 250);
 }
 
@@ -518,37 +531,61 @@ function attachButtons(state) {
   $('exportPdfBtn').addEventListener('click', async () => {
     const exportBtn = $('exportPdfBtn');
     if (!exportBtn || exportBtn.disabled) return;
-    const restoreBtn = setButtonBusy(exportBtn, true, 'Exporting…');
-    const removeSpinner = showLoadingSpinner(exportBtn);
+    
+    exportBtn.disabled = true;
+    const originalText = exportBtn.textContent;
+    exportBtn.textContent = 'Exporting…';
 
     try {
+      // Save current state
       saveState(state);
-      localStorage.setItem('ats_resume_plaintext_v1', resumeToPlainText(state));
+      const plaintext = resumeToPlainText(state);
+      Utils.setStorage('ats_resume_plaintext_v1', plaintext);
 
-      // Add a small delay to show the spinner
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Small delay for UX
+      await new Promise(resolve => setTimeout(resolve, 300));
 
+      // Trigger print dialog
       window.print();
-      showToast('PDF export initiated. Use your browser\'s print dialog to save as PDF.', 'success');
+      Utils.showSuccess('PDF export initiated. Use browser print dialog to save as PDF.');
+      
+      // Track export
+      if (typeof Analytics !== 'undefined') {
+        Analytics.trackResumeBuilder('export_pdf');
+      }
     } catch (error) {
       console.error('Export error:', error);
-      showToast('Failed to export PDF. Please try again.', 'error');
+      Utils.showError('Failed to export PDF. Please try again.');
+      if (typeof Analytics !== 'undefined') {
+        Analytics.trackError('PDF Export: ' + error.message, 'builder');
+      }
     } finally {
-      removeSpinner();
-      restoreBtn();
+      exportBtn.disabled = false;
+      exportBtn.textContent = originalText;
     }
   });
 
   $('resetBtn').addEventListener('click', () => {
     const ok = confirm('Reset all fields? This clears your local autosave.');
     if (!ok) return;
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem('ats_resume_plaintext_v1');
-    const fresh = defaultState();
-    Object.assign(state, fresh);
-    bindBasicFields(state);
-    persist(state);
-    render(state);
+    
+    try {
+      Utils.removeStorage(STORAGE_KEY);
+      Utils.removeStorage('ats_resume_plaintext_v1');
+      const fresh = defaultState();
+      Object.assign(state, fresh);
+      bindBasicFields(state);
+      persist(state);
+      render(state);
+      Utils.showSuccess('Resume reset to defaults');
+      
+      if (typeof Analytics !== 'undefined') {
+        Analytics.trackResumeBuilder('reset');
+      }
+    } catch (error) {
+      console.error('Reset error:', error);
+      Utils.showError('Failed to reset resume');
+    }
   });
 }
 
